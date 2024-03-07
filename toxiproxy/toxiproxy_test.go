@@ -17,22 +17,23 @@ import (
 func TestRedisLatency(t *testing.T) {
 	ctx := context.Background()
 
-	proxy, redisClient, err := bootstrapRedisClient(ctx, t)
+	toxiProxy, redisClient, err := setupTests(ctx, t)
 	if err != nil {
-		t.Fatalf("could not bootstrap redis: %v", err)
+		t.Fatalf("could not setup tests: %v", err)
 	}
 	defer flushRedis(ctx, *redisClient)
 
-	// Set data
-	key := fmt.Sprintf("{user.%s}.favoritefood", uuid.NewString())
-	value := "Cabbage Biscuits"
+	// set data
+	key := fmt.Sprintf("{user.%s}.go-meetup", uuid.NewString())
+	value := "attendance"
 	ttl, _ := time.ParseDuration("2h")
 	err = redisClient.Set(ctx, key, value, ttl).Err()
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	_, err = proxy.AddToxic("latency_down", "latency", "downstream", 1.0, toxiproxy.Attributes{
+	// introduce chaos
+	_, err = toxiProxy.AddToxic("latency_down", "latency", "downstream", 1.0, toxiproxy.Attributes{
 		"latency": 1000,
 		"jitter":  100,
 	})
@@ -40,19 +41,19 @@ func TestRedisLatency(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	// Get data
+	// get data
 	savedValue, err := redisClient.Get(ctx, key).Result()
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	// perform assertions
+	// assert
 	if savedValue != value {
-		t.Fatalf("Expected value %s. Got %s.", savedValue, value)
+		t.Fatalf("expected: %s got: %s", savedValue, value)
 	}
 }
 
-func bootstrapRedisClient(ctx context.Context, t *testing.T) (*toxiproxy.Proxy, *redis.Client, error) {
+func setupTests(ctx context.Context, t *testing.T) (*toxiproxy.Proxy, *redis.Client, error) {
 	newNetwork, err := network.New(ctx, network.WithCheckDuplicate())
 	if err != nil {
 		return nil, nil, fmt.Errorf("could not create network: %v", err)
@@ -69,7 +70,6 @@ func bootstrapRedisClient(ctx context.Context, t *testing.T) (*toxiproxy.Proxy, 
 		return nil, nil, fmt.Errorf("could not start redis: %v", err)
 	}
 
-	// Clean up the container after the test is complete
 	t.Cleanup(func() {
 		if err := toxiproxyContainer.Terminate(ctx); err != nil {
 			t.Fatalf("failed to terminate container: %s", err)

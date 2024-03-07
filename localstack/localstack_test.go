@@ -7,10 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
-	"github.com/docker/go-connections/nat"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/modules/localstack"
-	"log"
 	"testing"
 )
 
@@ -24,18 +22,18 @@ func TestS3Lookup(t *testing.T) {
 
 	client, localstackContainer, err := bootstrapS3Client(ctx)
 	if err != nil {
-		t.Fatalf("error creating client: %v", err)
+		t.Fatalf("failed creating client: %v", err)
 	}
-	// Clean up the container
-	defer func() {
+
+	t.Cleanup(func() {
 		if err := localstackContainer.Terminate(ctx); err != nil {
-			log.Fatalf("failed to terminate container: %s", err)
+			t.Fatal(err)
 		}
-	}()
+	})
 
 	buckets, err := client.ListBuckets(ctx, &s3.ListBucketsInput{})
 	if err != nil {
-		t.Fatalf("fail to get buckets: %v", err)
+		t.Fatalf("failed to get buckets: %v", err)
 	}
 
 	t.Logf("buckets: %v", buckets.Buckets)
@@ -49,7 +47,7 @@ func bootstrapS3Client(ctx context.Context) (*s3.Client, *localstack.LocalStackC
 		return nil, nil, fmt.Errorf("failed to start container: %s", err)
 	}
 
-	mappedPort, err := localstackContainer.MappedPort(ctx, nat.Port("4566/tcp"))
+	mappedPort, err := localstackContainer.MappedPort(ctx, "4566/tcp")
 	if err != nil {
 		return nil, nil, fmt.Errorf("could not map port: %v", err)
 	}
@@ -80,7 +78,7 @@ func bootstrapS3Client(ctx context.Context) (*s3.Client, *localstack.LocalStackC
 		config.WithCredentialsProvider(credentials.NewStaticCredentialsProvider("noop", "noop", "noop")),
 	)
 	if err != nil {
-		return nil, nil, fmt.Errorf("could not get aws config: %v", err)
+		return nil, nil, fmt.Errorf("failed to get aws config: %v", err)
 	}
 
 	// Create the resource client
