@@ -4,7 +4,7 @@ go 1.22
 
 require (
 	github.com/Shopify/toxiproxy/v2 v2.8.0
-	github.com/aws/aws-sdk-go-v2 v1.25.2
+	github.com/aws/aws-sdk-go-v2 v1.25.3
 	github.com/aws/aws-sdk-go-v2/config v1.27.6
 	github.com/aws/aws-sdk-go-v2/credentials v1.17.6
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.51.3
