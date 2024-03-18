@@ -1,9 +1,8 @@
 module go-testcontainers-examples
 
 go 1.22
-
 require (
-	github.com/Shopify/toxiproxy/v2 v2.8.0
+	github.com/Shopify/toxiproxy/v2 v2.9.0
 	github.com/aws/aws-sdk-go-v2 v1.25.2
 	github.com/aws/aws-sdk-go-v2/config v1.27.6
 	github.com/aws/aws-sdk-go-v2/credentials v1.17.6

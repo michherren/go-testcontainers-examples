@@ -8,8 +8,8 @@ github.com/Microsoft/go-winio v0.6.1 h1:9/kr64B9VUZrLm5YYwbGtUJnMgqWVOdUAXu6Migc
 github.com/Microsoft/go-winio v0.6.1/go.mod h1:LRdKpFKfdobln8UmuiYcKPot9D2v6svN5+sAH+4kjUM=
 github.com/Microsoft/hcsshim v0.12.0 h1:rbICA+XZFwrBef2Odk++0LjFvClNCJGRK+fsrP254Ts=
 github.com/Microsoft/hcsshim v0.12.0/go.mod h1:RZV12pcHCXQ42XnlQ3pz6FZfmrC1C+R4gaOHhRNML1g=
-github.com/Shopify/toxiproxy/v2 v2.8.0 h1:d7OzvAc0Rco3QO8jVsDSfadQ1up0Ca42hK+EGEpnQWs=
-github.com/Shopify/toxiproxy/v2 v2.8.0/go.mod h1:k0V84e/dLQmVNuI6S0G7TpXCl611OSRYdptoxm0XTzA=
+github.com/Shopify/toxiproxy/v2 v2.9.0 h1:DIaDZG2/r/kv3Em6UxYBUVnnWl1mHlYTGFv+sTPV7VI=
+github.com/Shopify/toxiproxy/v2 v2.9.0/go.mod h1:2uPRyxR46fsx2yUr9i8zcejzdkWfK7p6G23jV/X6YNs=
 github.com/aws/aws-sdk-go-v2 v1.25.2 h1:/uiG1avJRgLGiQM9X3qJM8+Qa6KRGK5rRPuXE0HUM+w=
 github.com/aws/aws-sdk-go-v2 v1.25.2/go.mod h1:Evoc5AsmtveRt1komDwIsjHFyrP5tDuF1D1U+6z6pNo=
 github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.6.1 h1:gTK2uhtAPtFcdRRJilZPx8uJLL2J85xK11nKtWL0wfU=
